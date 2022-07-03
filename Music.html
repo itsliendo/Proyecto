@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Music</title>
+</head>
+<h1>Music</h1>
+<script>
+  class Musica {
+    constructor({ generos }) {
+      this.generos;
+      this.validarGeneros(generos);
+    }
+
+    static get listaGeneros() {
+      return ["Musica Clasica", "Jazz", "Reggaeton", "Salsa"]
+    }
+
+    static generosAceptados() {
+      return console.info(`Los generos aceptados son:${Musica.listaGeneros.join(", ")}`)
+    }
+
+    validarCadena(propiedad, valor) {
+      if (!valor) return console.warn(`${propiedad} "${valor}" esta vacio`)
+
+      if (typeof valor !== "string") return console.error(`${propiedad} "${valor}" ingresado, NO es una cadena de texto`)
+
+      return true
+    }
+
+    validarArreglo(propiedad, valor) {
+      if (!valor) return console.warn(`${propiedad} "${valor}" esta vacio`)
+      if (!(valor instanceof Array)) return console.error(`${propiedad} "${valor}" ingresado, NO es un arreglo`)
+      if (valor.length === 0) return console.error(`${propiedad} "${valor}" no tiene datos`)
+      for (let cadena of valor) {
+        if (typeof cadena !== "string") return console.error(`El valor "${cadena}" ingresado, NO es una cadena de texto`)
+      }
+
+      return true
+    }
+
+    validarGeneros(generos) {
+      if (this.validarArreglo("Generos", generos)) {
+        for (let genero of generos) {
+          if (!Musica.listaGeneros.includes(genero)) {
+            console.error(`Genero(s) incorrectos "${generos.join(", ")}"`)
+            Musica.generosAceptados()
+          }
+        }
+      }
+    }
+  }
+
+  class Artista extends Musica {
+    constructor(generos, id, cantante, resena) {
+      super(generos);
+      this.id = id;
+      this.cantante = cantante;
+      this.resena = resena;
+      this.validarArtista(id);
+      this.validarCantante(cantante);
+      this.validarResena(resena);
+    }
+
+    validarLongitudCadena(propiedad, valor, longitud) {
+      if (valor.length > longitud) return console.error(`${propiedad} "${valor}" excede el numero de caracteres permitidos (${longitud}).`)
+
+      return true
+    }
+
+    validarNumero(propiedad, valor) {
+      if (!valor) return console.warn(`${propiedad} "${valor}" esta vacio`)
+      if (typeof valor !== "number") return console.error(`${propiedad} "${valor}" ingresado, NO es un numero`)
+
+      return true
+
+    }
+
+    validarArtista(id) {
+      if (this.validarCadena("Artista id", id))
+        if (!(/^([a-z]){2}([0-9]){5}$/.test(id)))
+
+          return console.error(`Artista id "${id}" no es valido, debe tener 7 caracteres, los 2 primeros letras minusculas, los 5 restantes numeros`)
+    }
+
+    validarCantante(cantante) {
+      if (this.validarCadena("Cantante", cantante))
+        this.validarLongitudCadena("Cantante", cantante, 25)
+    }
+
+    validarResena(resena) {
+      if (this.validarCadena("Reseña", resena))
+        this.validarLongitudCadena("Reseña", resena, 100)
+    }
+
+
+  }
+
+  const Artistas = new Artista
+
+    ({
+      generos: ["Salsa"],
+      id: "asdf",
+      cantante: "123",
+      resena: "123",
+    })
+
+
+</script>
+
+<body>
+
+</body>
+
+</html>
